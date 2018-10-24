@@ -1,0 +1,147 @@
+﻿<Window x:Class="DicePoker.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DicePoker.View"
+        xmlns:control="clr-namespace:DicePoker.Controls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="1080" Width="1920" WindowStartupLocation="CenterScreen">
+    <Window.Resources>        
+        <Style TargetType="Button" x:Key="Dice">
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="{Binding ImgSource}"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border Name="border" Background="{TemplateBinding Background}"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="border">
+                                    <Setter.Value>
+                                        <ImageBrush ImageSource="{Binding ImgDice}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Button" x:Key="Bet">
+            <Setter Property="Height" Value="70"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Margin" Value="50,0,50,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="100" Background="White" BorderBrush="#ccc" BorderThickness="0,1,1,0">
+                            <ContentPresenter x:Name="contentPresenter" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="C:\Users\sasha\OneDrive\Документи\Visual Studio 2015\Projects\DicePoker\DicePoker\Assets\Images\bg2.png"/>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.1*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0.1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="0.1*"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="tbPlayerName" Text="{Binding PlayerName}" FontSize="50" FontFamily="/DicePoker;component/Assets/Fonts/#Caribbean" Margin="270,60,90,190" Grid.Column="1" Grid.Row="3"/>
+        <TextBlock x:Name="tbPlayerMoney" Text="{Binding PlayerMoney, Mode=TwoWay}" FontSize="50" FontFamily="/DicePoker;component/Assets/Fonts/#Caribbean" Margin="270,190,90,70" Grid.Column="1" Grid.Row="3" />
+        <TextBlock x:Name="tbComputerName" Text="{Binding ComputerName}" FontSize="50" FontFamily="/DicePoker;component/Assets/Fonts/#Caribbean" Margin="270,76,90,174" Grid.Column="3" Grid.Row="1"/>
+        <TextBlock x:Name="tbComputerMoney" Text="{Binding ComputerMoney, Mode=TwoWay}" FontSize="50" FontFamily="/DicePoker;component/Assets/Fonts/#Caribbean" Margin="270,216,90,44" Grid.Column="3" Grid.Row="1" />
+
+        <ListBox Name="lbPlayerDice" Grid.Column="3" Grid.Row="3" ItemsSource="{Binding PlayerHand, Mode=TwoWay}" Background="Transparent" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center" SelectedItem="{Binding SelectedDice}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Image Source="{Binding Path=DiceImagePath, Mode=TwoWay}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding SelectDiceCommand, Mode=TwoWay}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ListBox>
+        <ListBox Name="lbComputerDice" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding ComputerHand}" Background="Transparent" BorderThickness="0">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Image Source="{Binding Path=DiceImagePath}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+        <Image Source="C:\Users\sasha\OneDrive\Документи\Visual Studio 2015\Projects\DicePoker\DicePoker\Assets\Images\cup.png" Grid.Column="2" Grid.Row="1"/>
+        <Image Source="C:\Users\sasha\OneDrive\Документи\Visual Studio 2015\Projects\DicePoker\DicePoker\Assets\Images\cup.png" Grid.Column="2" Grid.Row="3">
+            <Image.Triggers>
+                <EventTrigger RoutedEvent="Image.MouseDown">
+                    <BeginStoryboard>
+                        <Storyboard Storyboard.TargetProperty="Opacity">
+                            <DoubleAnimation To="0.5" Duration="0:0:01.00"></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Image.Triggers>
+        </Image>
+        <Button Grid.Column="2" Grid.Row="3" Height="30" Width="50" Command="{Binding OpenBetControlCommand}"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="2" Height="100" Width="300" Margin="10,218,288,10">
+            <Image Name="imgPlayerBet" Source="C:\Users\sasha\OneDrive\Документи\Visual Studio 2015\Projects\DicePoker\DicePoker\Assets\Images\money.png"/>
+            <TextBlock Name="tbPlayerBet" Text="{Binding PlayerBet}" FontFamily="/DicePoker;component/Assets/Fonts/#Caribbean" FontSize="50"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="2" Height="100" Width="300" Margin="294,30,104,198">
+            <Image Name="imgComputerBet" Source="C:\Users\sasha\OneDrive\Документи\Visual Studio 2015\Projects\DicePoker\DicePoker\Assets\Images\money.png"/>
+            <TextBlock Name="tbComputerBet" Text="{Binding ComputerBet}" FontFamily="/DicePoker;component/Assets/Fonts/#Caribbean" FontSize="50"/>
+        </StackPanel>  
+        <Grid Name="gridMakingBet" Grid.Column="2" Grid.Row="2" Visibility="{Binding GridMakingBetVisibility}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" VerticalAlignment="Center" FontFamily="/DicePoker;component/Assets/Fonts/#Caribbean" FontSize="50" HorizontalAlignment="Center">Make your bet</Label>
+            <Slider Name="slider" Grid.Row="1" Width="400" IsSnapToTickEnabled="True" Minimum="{Binding MinBet}" Maximum="{Binding PlayerMoney}" Value="{Binding CurrentBet}"></Slider>
+            <TextBlock Grid.Row="1" Name="tbMinBet" FontFamily="/DicePoker;component/Assets/Fonts/#Caribbean" Text="{Binding MinBet}" Height="30" Width="100" Margin="10,30,390,90"/>
+            <TextBlock Grid.Row="1" Name="tbCurrentBet" FontFamily="/DicePoker;component/Assets/Fonts/#Caribbean" Text="{Binding ElementName=slider, Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Height="30" Width="100" Margin="200,30,200,90"/>
+            <TextBlock Grid.Row="1" Name="tbMaxBet" FontFamily="/DicePoker;component/Assets/Fonts/#Caribbean" Text="{Binding PlayerMoney}" Height="30" Width="100" Margin="390,30,10,90"/>
+            <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="80">
+                <Button Style="{StaticResource Bet}" Command="{Binding PassCommand}">
+                    <Image Source="C:\Users\sasha\OneDrive\Документи\Visual Studio 2015\Projects\DicePoker\DicePoker\Assets\Images\passbtn.png"/>
+                </Button>
+                <Button Style="{StaticResource Bet}" Command="{Binding ConfirmBetCommand}">
+                    <Image Source="C:\Users\sasha\OneDrive\Документи\Visual Studio 2015\Projects\DicePoker\DicePoker\Assets\Images\raisebtn.png"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

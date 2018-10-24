@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="DicePoker.Controls.BetControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DicePoker.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" VerticalAlignment="Center" FontFamily="/DicePoker;component/Assets/Fonts/#Caribbean" FontSize="50" HorizontalAlignment="Center">Make your bet</Label>
+        <Slider Name="slider" Grid.Row="1" Width="400" IsSnapToTickEnabled="True" Minimum="{Binding MinBet}" Maximum="{Binding MaxBet}"></Slider>
+        <TextBlock Grid.Row="1" Name="tbMinBet" FontFamily="/DicePoker;component/Assets/Fonts/#Caribbean" Text="{Binding MinBet}" Height="30" Width="100" Margin="10,30,390,90"/>
+        <TextBlock Grid.Row="1" Name="tbCurrentBet" FontFamily="/DicePoker;component/Assets/Fonts/#Caribbean" Text="{Binding ElementName=slider, Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Height="30" Width="100" Margin="200,30,200,90"/>
+        <TextBlock Grid.Row="1" Name="tbMaxBet" FontFamily="/DicePoker;component/Assets/Fonts/#Caribbean" Text="{Binding MaxBet}" Height="30" Width="100" Margin="390,30,10,90"/>
+        <Button Grid.Row="1" Width="60" Height="60" Margin="115,72,325,18">Cancel</Button>
+        <Button Grid.Row="1" Width="60" Height="60" Margin="325,72,115,18" Command="{Binding ConfirmBetCommand}">Confirm</Button>
+    </Grid>
+</UserControl>
